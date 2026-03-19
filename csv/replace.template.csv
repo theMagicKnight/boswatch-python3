@@ -1,0 +1,15 @@
+search,replace
+#
+#
+#
+#
+#
+
+"\n",""
+"<NUL><NUL>",""
+"<NUL>",""
+"<NUL",""
+"< NUL>",""
+"<EOT>",""
+"<DC1>",""
+"HäuslEin",""
