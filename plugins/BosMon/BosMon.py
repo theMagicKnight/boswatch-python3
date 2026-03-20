@@ -158,6 +158,7 @@ def run(typ,freq,data):
                         logging.debug(" - Params: %s", params)
                         # dispatch the BosMon-request
                         bosMonRequest(httprequest, params, headers)
+                        logging.info("send FMS to BosMon")
                     except:
                         logging.error("FMS to BosMon failed")
                         logging.debug("FMS to BosMon failed", exc_info=True)
@@ -170,6 +171,7 @@ def run(typ,freq,data):
                         logging.debug(" - Params: %s", params)
                         # dispatch the BosMon-request
                         bosMonRequest(httprequest, params, headers)
+                        logging.info("send ZVEI to BosMon")
                     except:
                         logging.error("ZVEI to BosMon failed")
                         logging.debug("ZVEI to BosMon failed", exc_info=True)
@@ -183,7 +185,7 @@ def run(typ,freq,data):
                         logging.debug(" - Params: %s", params)
                         # dispatch the BosMon-request
                         bosMonRequest(httprequest, params, headers)
-                        logging.info("send to BosMon")
+                        logging.info("send POCSAG to BosMon")
                     except:
                         logging.error("POC to BosMon failed")
                         logging.debug("POC to BosMon failed", exc_info=True)

@@ -90,6 +90,7 @@ def run(typ,freq,data):
                 #
                 # Connect to MySQL
                 #
+                logging.info("send to MySQL")
                 logging.debug("connect to MySQL")
                 connection = mysql.connector.connect(host = globalVars.config.get("MySQL","dbserver"), port = globalVars.config.get("MySQL","dbport"), user = globalVars.config.get("MySQL","dbuser"), passwd = globalVars.config.get("MySQL","dbpassword"), db = globalVars.config.get("MySQL","database"), charset = 'utf8mb4', collation = 'utf8mb4_general_ci')
                 cursor = connection.cursor()
@@ -119,8 +120,6 @@ def run(typ,freq,data):
                                     cursor.execute("INSERT INTO "+globalVars.config.get("MySQL","tableSIG")+" (`time`,`ric`) VALUES (NOW(), '"+data["ric"]+"');")
                         else:
                             cursor.execute("INSERT INTO "+globalVars.config.get("MySQL","tablePOC")+" (`time`, `ric`, `function`, `functionChar`, `msg`, `bitrate`, `description`) VALUES (FROM_UNIXTIME(%s),%s,%s,%s,%s,%s,%s)", (data["timestamp"], data["ric"], data["function"], data["functionChar"], data["msg"], data["bitrate"], data["description"]))
-                            logging.info("send to MySQL")
-
                     else:
                         logging.warning("Invalid Typ: %s", typ)
                 except:

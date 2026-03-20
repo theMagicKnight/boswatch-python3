@@ -24,6 +24,7 @@ def onLoad():
 
 def run(typ, freq, data):
     try:
+        logging.info("send to Pushover")
         if configHandler.checkConfig("Pushover"):
 
             if typ == "FMS":
