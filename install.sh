@@ -11,17 +11,17 @@
 @file:        install.sh
 @date:        14.04.2020
 @author:      Bastian Schroll, Smeti
-@description: Installation File for BOSWatch3
+@description: Installation File for Boswatch-PY3
 """
 
 """
 Die Installation von BOSWatch3 wird mittels diesem bash-Skript weitestgehend automatisiert durchgeführt.
 Zunächst wird das aktuelle Installationsskript heruntergeladen:
-wget https://github.com/BOSWatch/BW3-Core/raw/master/install.sh
+wget https://raw.githubusercontent.com/theMagicKnight/boswatch-python3/refs/heads/main/install.sh
 Im Anschluss wird das Skript mit dem Kommando
 sudo bash install.sh
 ausgeführt.
-Standardmäßig wird das Programm nach /opt/boswatch3 installiert. Folgende Parameter stehen zur Installation zur Verfügung:
+Standardmäßig wird das Programm nach /opt/boswatch-py3 installiert. Folgende Parameter stehen zur Installation zur Verfügung:
 Parameter 	zulässige Werte 	Funktion
 -r / --reboot 	- 	Reboot nach Installation (Ohne Angabe: Kein Reboot)
 -b / --branch 	dev 	Installiert einen anderen Branch (dev nicht empfohlen!)
@@ -77,8 +77,8 @@ echo ""
 echo "Caution, script does not install a webserver with PHP and MySQL"
 echo "So you have to make up manually if you want to use MySQL support"
 
-boswatchpath=/opt/boswatch3
-boswatch_install_path=/opt/boswatch3_install
+boswatchpath=/opt/boswatch-py3
+boswatch_install_path=/opt/boswatch-py3_install
 reboot=false
 
 for (( i=1; i<=$#; i=$i+2 )); do
