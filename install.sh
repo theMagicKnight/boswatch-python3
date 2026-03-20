@@ -7,7 +7,8 @@
  / /_/ / /_/ /___/ /| |/ |/ / /_/ / /_/ /__/ / / /   ___/ /
 /_____/\____//____/ |__/|__/\__,_/\__/\___/_/ /_/   /____/
                 German BOS Information Script
-                     by Bastian Schroll
+                by Bastian Schroll and chatGPT
+
 @file:        install.sh
 @date:        14.04.2020
 @author:      Bastian Schroll, Smeti
@@ -184,7 +185,7 @@ echo "-> download BOSWatch3.................."
 
 case ${branch} in
   "dev") git clone -b develop https://github.com/theMagicKnight/boswatch-python3 ${boswatchpath} >> ${boswatch_install_path}/setup_log.txt 2>&1 && \
-    exitcodefunction $? git-clone BW3-Core-develop ;;
+    exitcodefunction $? git-clone boswatch-python3 ;;
   *) git clone -b master https://github.com/theMagicKnight/boswatch-python3 ${boswatchpath} >> ${boswatch_install_path}/setup_log.txt 2>&1 && \
     exitcodefunction $? git-clone boswatch-python3 ;;
 esac
