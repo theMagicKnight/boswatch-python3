@@ -16,19 +16,19 @@
 """
 
 """
-Die Installation von BOSWatch3 wird mittels diesem bash-Skript weitestgehend automatisiert durchgeführt.
-Zunächst wird das aktuelle Installationsskript heruntergeladen:
+Die Installation von BOSWatch3 wird mittels diesem bash-Skript weitestgehend automatisiert durchgefÃ¼hrt.
+ZunÃ¤chst wird das aktuelle Installationsskript heruntergeladen:
 wget https://raw.githubusercontent.com/theMagicKnight/boswatch-python3/refs/heads/main/install.sh
 Im Anschluss wird das Skript mit dem Kommando
 sudo bash install.sh
-ausgeführt.
-Standardmäßig wird das Programm nach /opt/boswatch-py3 installiert. Folgende Parameter stehen zur Installation zur Verfügung:
-Parameter 	zulässige Werte 	Funktion
+ausgefÃ¼hrt.
+StandardmÃ¤ÃŸig wird das Programm nach /opt/boswatch-py3 installiert. Folgende Parameter stehen zur Installation zur VerfÃ¼gung:
+Parameter 	zulÃ¤ssige Werte 	Funktion
 -r / --reboot 	- 	Reboot nach Installation (Ohne Angabe: Kein Reboot)
 -b / --branch 	dev 	Installiert einen anderen Branch (dev nicht empfohlen!)
 -p / --path 	/your/path 	Installiert in ein anderes Verzeichnis (nicht empfohlen!)
     master ist der stabile, zur allgemeinen Nutzung vorgesehene Branch
-    develop ist der aktuelle Entwicklungs-Branch (Nur für Entwickler empfohlen)
+    develop ist der aktuelle Entwicklungs-Branch (Nur fÃ¼r Entwickler empfohlen)
 """
 
 
@@ -59,7 +59,7 @@ echo "   / __ )/ __ \/ ___/ |     / /___ _/ /______/ /_     |__  / "
 echo "  / __  / / / /\__ \| | /| / / __  / __/ ___/ __ \     /_ <  "
 echo " / /_/ / /_/ /___/ /| |/ |/ / /_/ / /_/ /__/ / / /   ___/ /  "
 echo "/_____/\____//____/ |__/|__/\__,_/\__/\___/_/ /_/   /____/   "
-echo "                German BOS Information Script                "             
+echo "                German BOS Information Script                "
 echo "                by Bastian Schroll and chatGPT               "
 echo ""
 echo "                          PYTHON 3                           "
@@ -158,7 +158,7 @@ echo "[ 6/10] [######----]"
 tput cup 15 5
 echo "-> download multimon-ng................"
 cd ${boswatch_install_path}
-git clone --branch 1.1.8 https://github.com/EliasOenal/multimon-ng.git multimonNG >> ${boswatch_install_path}/setup_log.txt 2>&1
+git clone --branch 1.4.1 https://github.com/EliasOenal/multimon-ng.git multimonNG >> ${boswatch_install_path}/setup_log.txt 2>&1
 exitcodefunction $? git-clone multimonNG
 
 cd ${boswatch_install_path}/multimonNG/
@@ -182,13 +182,8 @@ tput cup 13 15
 echo "[ 8/10] [########--]"
 tput cup 15 5
 echo "-> download BOSWatch3.................."
-
-case ${branch} in
-  "dev") git clone -b develop https://github.com/theMagicKnight/boswatch-python3 ${boswatchpath} >> ${boswatch_install_path}/setup_log.txt 2>&1 && \
-    exitcodefunction $? git-clone boswatch-python3 ;;
-  *) git clone -b master https://github.com/theMagicKnight/boswatch-python3 ${boswatchpath} >> ${boswatch_install_path}/setup_log.txt 2>&1 && \
-    exitcodefunction $? git-clone boswatch-python3 ;;
-esac
+git clone https://github.com/theMagicKnight/boswatch-python3.git ${boswatchpath}
+exitcodefunction $? git-clone boswatch-python3
 
 tput cup 13 15
 echo "[ 9/10] [#########-]"
@@ -202,27 +197,31 @@ tput cup 13 15
 echo "[10/10] [##########]"
 tput cup 15 5
 echo "-> install optional Python modules........"
-python3 -m pip install --upgrade pip >> "${boswatch_install_path}/setup_log.txt" 2>&1
+python3 -m pip install --break-system-packages --upgrade pip >> "${boswatch_install_path}/setup_log.txt" 2>&1
 exitcodefunction $? pip-upgrade python
 
-python3 -m pip install mysql-connector-python paho-mqtt python-telegram-bot python-pushover phue >> "${boswatch_install_path}/setup_log.txt" 2>&1
+python3 -m pip install --break-system-packages mysql-connector-python paho-mqtt python-telegram-bot python-pushover phue >> "${boswatch_install_path}/setup_log.txt" 2>&1
 exitcodefunction $? pip-install python-modules
+
+clear
 
 tput cup 17 1
 tput rev # Schrift zur besseren lesbarkeit Revers
-echo "BOSWatch is now installed in ${boswatchpath}/   Installation ready!"
+echo "Boswatch Python3 Version is now installed in ${boswatchpath}/   Installation ready!"
 tput sgr0 # Schrift wieder Normal
 tput cup 19 3
-echo "Watch out: to run BOSWatch3 you have to modify the server.yaml and client.yaml!"
 echo "Do the following step to do so:"
-echo "sudo nano ${boswatchpath}/config/client.yaml   eg. server.yaml"
+echo "sudo nano ${boswatchpath}/config/config.ini"
 echo "and modify the config as you need. This step is optional if you are upgrading an old version of BOSWatch3."
-echo "You can read the instructions on https://docs.boswatch.de/"
 tput setaf 1 # Rote Schrift
 echo "Please REBOOT before the first start"
-tput setaf 9 # Schrift zurücksetzen
-echo "start Boswatch3 with"
-echo "sudo python3 bw_client.py -c client.yaml   and    sudo python3 bw_server.py -c server.yaml"
+tput setaf 9 # Schrift zurÃ¼cksetzen
+echo "start Boswatch Python3 Version with"
+echo "sudo python3 /opt/boswatch-py3/boswatch.py -f 123.456M -a POC512 POC1200"
+echo ""
+echo "Frequency        -f xxx.yyyM"
+echo "PPM or ErrorRate -e xx"
+echo "Modulation       -a POC512 POC1200 POC2400 FMS ZVEI"
 
 tput cnorm
 
