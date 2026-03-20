@@ -4,8 +4,7 @@ search,replace
 #
 #
 #
-
-"\n",""
+"\\n",""
 "<NUL><NUL>",""
 "<NUL>",""
 "<NUL",""
@@ -13,3 +12,5 @@ search,replace
 "<EOT>",""
 "<DC1>",""
 "HäuslEin",""
+"weiblich","WEIBLICH"
+"männlich","MÄNNLICH"
