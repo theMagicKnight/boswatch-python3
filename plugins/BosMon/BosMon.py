@@ -154,7 +154,7 @@ def run(typ,freq,data):
                             info = info + 4      # + b0100
                         # "I" is nothing to do     + b0000
 
-                        params = urllib.parse.urlencode({'type':'fms', 'address':data["fms"], 'status':data["status"].upper(), 'info':info, 'flags':'0'})
+                        params = urllib.parse.urlencode({'type':'fms', 'address':data["fms"], 'status':int(data["status"],16), 'info':info, 'flags':'0'})
                         logging.debug(" - Params: %s", params)
                         # dispatch the BosMon-request
                         bosMonRequest(httprequest, params, headers)
