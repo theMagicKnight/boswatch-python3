@@ -1,5 +1,7 @@
 ![# BOSWatch](/boswatch.png)
 
+PYTHON3 Version
+
 :satellite: Python Script to receive and decode German BOS Information with rtl_fm and multimon-NG :satellite:
 
 #### WICHTIG
@@ -26,14 +28,8 @@ Zur Weiterentwicklung des Programms benötigen wir Deine Mithilfe - bitte melde 
 In der Zukunft wollen wir die Möglichkeit schaffen, codierte Nachrichten zu entschlüsseln (und nur dann, wenn der Schlüssel bekannt ist!), dafür brauchen wir Dich als Tester!
 
 **Readme ist veraltet** - bitte im [Wiki](https://github.com/Schrolli91/BOSWatch/wiki) nachschauen!
+Original ist von [Original Boswatch Py2.7](https://github.com/Schrolli91/BOSWatch)
 
-
-
-**Please** only use Code from **master**-Branch - thats **the only stable!**
-
-beta-branch is for beta-test of new features
-
-unless you are developer you can use the develop-Branch - may be unstable!
 
 ### Features
 ##### Implemented features:
