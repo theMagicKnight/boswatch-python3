@@ -2,51 +2,47 @@
 # -*- coding: UTF-8 -*-
 
 """
-Functions to Load and import the Plugins
+Functions to load and import the Plugins
 
 @author: Bastian Schroll
 
 @requires: Configuration has to be set in the config.ini
 """
 
-import logging # Global logger
-import imp
+import logging
 import os
+import importlib.util
 
-from configparser import NoOptionError # we need this exception
-from includes import globalVars  # Global variables
+from configparser import NoOptionError
+from includes import globalVars
+
 
 def loadPlugins():
     """
     Load all plugins into globalVars.pluginList
 
-    @return:    nothing
+    @return: nothing
     @exception: Exception if insert into globalVars.pluginList failed
     """
     try:
         logging.debug("loading plugins")
-        # go to all Plugins from getPlugins()
-        for i in getPlugins():
-            try:
-                # call for each Plugin the loadPlugin() Methode
-                plugin = loadPlugin(i)
-            except:
-                # call next plugin, if one has thrown an exception
-                logging.error("error loading plugin: %s", i["name"])
-                logging.debug("error loading plugin: %s", i["name"], exc_info=True)
-            else: # only call onLoad() and insert into pluginList[] if import is succesfull
 
+        for plugin_info in getPlugins():
+            try:
+                plugin = loadPlugin(plugin_info)
+            except Exception:
+                logging.error("error loading plugin: %s", plugin_info["name"])
+                logging.debug("error loading plugin: %s", plugin_info["name"], exc_info=True)
+            else:
                 try:
-                    # Try to call the .onLoad() routine for all active plugins
-                    logging.debug("call %s.onLoad()", i["name"])
+                    logging.debug("call %s.onLoad()", plugin_info["name"])
                     plugin.onLoad()
-                    # Add it to globalVars.pluginList
-                    globalVars.pluginList[i["name"]] = plugin
-                except:
-                    # call next plugin, if one has thrown an exception
-                    logging.error("error calling %s.onLoad()", i["name"])
+                    globalVars.pluginList[plugin_info["name"]] = plugin
+                except Exception:
+                    logging.error("error calling %s.onLoad()", plugin_info["name"])
                     logging.debug("error calling %s.onLoad()", exc_info=True)
-    except:
+
+    except Exception:
         logging.error("cannot load plugins")
         logging.debug("cannot load plugins", exc_info=True)
         raise
@@ -54,35 +50,36 @@ def loadPlugins():
 
 def getPlugins():
     """
-    get a Python Dict of all activeated plugins
+    Get a Python list of all activated plugins
 
-    @return:    plugins as Python Dict
+    @return: plugins as Python list
     @exception: Exception if plugin search failed
     """
     try:
         logging.debug("Search in plugin folder")
-        PluginFolder = globalVars.script_path+"/plugins"
+        plugin_folder = os.path.join(globalVars.script_path, "plugins")
         plugins = []
-        # Go to all Folders in the Plugin-Dir
-        for i in os.listdir(PluginFolder):
-            location = os.path.join(PluginFolder, i)
 
-            # Skip if Path.isdir() or no File DIR_NAME.py is found
-            if not os.path.isdir(location) or not i + ".py" in os.listdir(location):
+        for entry in os.listdir(plugin_folder):
+            location = os.path.join(plugin_folder, entry)
+            plugin_file = os.path.join(location, entry + ".py")
+
+            if not os.path.isdir(location) or not os.path.isfile(plugin_file):
                 continue
 
-            # is the plugin enabled in the config-file?
             try:
-                if globalVars.config.getint("Plugins", i):
-                    info = imp.find_module(i, [location])
-                    plugins.append({"name": i, "info": info})
-                    logging.debug("Plugin [ENABLED ] %s", i)
+                if globalVars.config.getint("Plugins", entry):
+                    plugins.append({
+                        "name": entry,
+                        "path": plugin_file,
+                    })
+                    logging.debug("Plugin [ENABLED ] %s", entry)
                 else:
-                    logging.debug("Plugin [DISABLED] %s ", i)
-            # no entry for plugin found in config-file
+                    logging.debug("Plugin [DISABLED] %s", entry)
             except NoOptionError:
-                logging.warning("Plugin [NO CONF ] %s", i)
-    except:
+                logging.warning("Plugin [NO CONF ] %s", entry)
+
+    except Exception:
         logging.error("Error during plugin search")
         logging.debug("Error during plugin search", exc_info=True)
         raise
@@ -92,19 +89,26 @@ def getPlugins():
 
 def loadPlugin(plugin):
     """
-    Imports a single plugin
+    Import a single plugin
 
-    @type    plugin: plugin Data
+    @type    plugin: plugin data
     @param   plugin: Contains the information to import a plugin
 
-
-    @return:    nothing
+    @return: imported module
     @exception: Exception if plugin import failed
     """
     try:
         logging.debug("load plugin: %s", plugin["name"])
-        return imp.load_module(plugin["name"], *plugin["info"])
-    except:
+
+        spec = importlib.util.spec_from_file_location(plugin["name"], plugin["path"])
+        if spec is None or spec.loader is None:
+            raise ImportError("cannot create import spec for plugin: %s" % plugin["name"])
+
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    except Exception:
         logging.error("cannot load plugin: %s", plugin["name"])
         logging.debug("cannot load plugin: %s", plugin["name"], exc_info=True)
         raise
