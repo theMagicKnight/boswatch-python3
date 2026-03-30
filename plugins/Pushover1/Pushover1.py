@@ -30,7 +30,7 @@ def run(typ, freq, data):
             if typ == "FMS":
                 message = globalVars.config.get("Pushover1", "fms_message", raw=True)
                 title = globalVars.config.get("Pushover1", "fms_title", raw=True)
-                priority = str(globalVars.config.get("Pushover", "fms_prio"))
+                priority = str(globalVars.config.get("Pushover1", "fms_prio"))
 
             elif typ == "ZVEI":
                 if globalVars.config.get("Pushover1", "zvei_sep_prio") == '1':
@@ -92,8 +92,8 @@ def run(typ, freq, data):
                     sound = "pushover"
 
                 payload = {
-                    "token": globalVars.config.get("Pushover1", "api_key1"),
-                    "user": globalVars.config.get("Pushover1", "user_key1"),
+                    "token": globalVars.config.get("Pushover1", "api1_key"),
+                    "user": globalVars.config.get("Pushover1", "user1_key"),
                     "message": message,
                     "html": globalVars.config.get("Pushover1", "html"),
                     "title": title,
