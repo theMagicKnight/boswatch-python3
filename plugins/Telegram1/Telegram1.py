@@ -73,7 +73,7 @@ def onLoad():
     BOTChatIDAPIKey = globalVars.config.get("Telegram1", "BOTChatIDAPIKey1")
     RICforLocationAPIKey = globalVars.config.get("Telegram1", "RICforLocationAPIKey1")
     GoogleAPIKey = globalVars.config.get("Telegram1", "GoogleAPIKey1")
-    RoutingOrigin = globalVars.config.get("Telegram1", "RoutingOrigin1")
+    RoutingOrigin = globalVars.config.get("Telegram1", "RoutingOrigin")
 
     return
 
