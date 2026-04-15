@@ -62,8 +62,8 @@ def bosMonRequest(httprequest, params, headers):
         #
         httprequest.request("POST", "/telegramin/"+globalVars.config.get("BosMon1", "bosmon1_channel")+"/input.xml", params, headers)
     except:
-        logging.error("request to BosMon1 failed")
-        logging.debug("request to BosMon1 failed", exc_info=True)
+        logging.error("request to BosMon failed")
+        logging.debug("request to BosMon failed", exc_info=True)
         raise
     else:
         #
@@ -71,9 +71,9 @@ def bosMonRequest(httprequest, params, headers):
         #
         httpresponse = httprequest.getresponse()
         if str(httpresponse.status) == "200": #Check HTTP Response an print a Log or Error
-            logging.debug("BosMon1 response: %s - %s", str(httpresponse.status), str(httpresponse.reason))
+            logging.debug("BosMon response: %s - %s", str(httpresponse.status), str(httpresponse.reason))
         else:
-            logging.warning("BosMon1 response: %s - %s", str(httpresponse.status), str(httpresponse.reason))
+            logging.warning("BosMon response: %s - %s", str(httpresponse.status), str(httpresponse.reason))
 
 ##
 #
@@ -111,7 +111,7 @@ def run(typ,freq,data):
                 headers['Accept'] = "text/plain"
                 # if an user is set in the config.ini we will use HTTP-Authorization
                 
-                if globalVars.config.get("BosMon1", "bosmon1_user"):
+                if globalVars.config.get("BosMon", "bosmon_user"):
                     # generate b64encoded authorization-token for HTTP-request
                     auth_string = "{0}:{1}".format(
                     globalVars.config.get("BosMon1", "bosmon1_user"),
@@ -173,8 +173,8 @@ def run(typ,freq,data):
                         bosMonRequest(httprequest, params, headers)
                         logging.info("send ZVEI to BosMon1")
                     except:
-                        logging.error("ZVEI to BosMon1 failed")
-                        logging.debug("ZVEI to BosMon1 failed", exc_info=True)
+                        logging.error("ZVEI to BosMon failed")
+                        logging.debug("ZVEI to BosMon failed", exc_info=True)
                         return
 
                 elif typ == "POC":
